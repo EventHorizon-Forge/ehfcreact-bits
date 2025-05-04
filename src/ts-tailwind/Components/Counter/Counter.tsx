@@ -55,7 +55,7 @@ function Digit({ place, value, height, digitStyle }: DigitProps) {
   };
 
   return (
-    <div style={{ ...defaultStyle, ...digitStyle }}>
+    <div className="digit" style={{ ...defaultStyle, ...digitStyle }}>
       {Array.from({ length: 10 }, (_, i) => (
         <Number key={i} mv={animatedValue} number={i} height={height} />
       ))}
@@ -104,49 +104,9 @@ export default function Counter({
 }: CounterProps) {
   const height = fontSize + padding;
 
-  const defaultContainerStyle: React.CSSProperties = {
-    position: "relative",
-    display: "inline-block",
-  };
-
-  const defaultCounterStyle: React.CSSProperties = {
-    fontSize,
-    display: "flex",
-    gap: gap,
-    overflow: "hidden",
-    borderRadius: borderRadius,
-    paddingLeft: horizontalPadding,
-    paddingRight: horizontalPadding,
-    lineHeight: 1,
-    color: textColor,
-    fontWeight: fontWeight,
-  };
-
-  const gradientContainerStyle: React.CSSProperties = {
-    pointerEvents: "none",
-    position: "absolute",
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-  };
-
-  const defaultTopGradientStyle: React.CSSProperties = {
-    height: gradientHeight,
-    background: `linear-gradient(to bottom, ${gradientFrom}, ${gradientTo})`,
-  };
-
-  const defaultBottomGradientStyle: React.CSSProperties = {
-    position: "absolute",
-    bottom: 0,
-    width: "100%",
-    height: gradientHeight,
-    background: `linear-gradient(to top, ${gradientFrom}, ${gradientTo})`,
-  };
-
   return (
-    <div style={{ ...defaultContainerStyle, ...containerStyle }}>
-      <div style={{ ...defaultCounterStyle, ...counterStyle }}>
+    <div className="counter-container">
+      <div className="counter-counter">
         {places.map((place) => (
           <Digit
             key={place}
@@ -157,17 +117,9 @@ export default function Counter({
           />
         ))}
       </div>
-      <div style={gradientContainerStyle}>
-        <div
-          style={topGradientStyle ? topGradientStyle : defaultTopGradientStyle}
-        />
-        <div
-          style={
-            bottomGradientStyle
-              ? bottomGradientStyle
-              : defaultBottomGradientStyle
-          }
-        />
+      <div className="gradient-container">
+        <div className="top-gradient" />
+        <div className="bottom-gradient" />
       </div>
     </div>
   );

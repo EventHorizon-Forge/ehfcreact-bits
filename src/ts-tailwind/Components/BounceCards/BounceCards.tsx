@@ -125,22 +125,12 @@ export default function BounceCards({
 
   return (
     <div
-      className={`relative flex items-center justify-center ${className}`}
-      style={{
-        width: containerWidth,
-        height: containerHeight,
-      }}
+      className={`relative flex items-center justify-center ${className} bounce-card`}
     >
       {images.map((src, idx) => (
         <div
           key={idx}
-          className={`card card-${idx} absolute w-[200px] aspect-square border-8 border-white rounded-[30px] overflow-hidden`}
-          style={{
-            boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)",
-            transform: transformStyles[idx] || "none",
-          }}
-          onMouseEnter={() => pushSiblings(idx)}
-          onMouseLeave={resetSiblings}
+          className={`card card-${idx} absolute w-[200px] aspect-square border-8 border-white rounded-[30px] overflow-hidden bounce-card-item`}
         >
           <img
             className="w-full h-full object-cover"

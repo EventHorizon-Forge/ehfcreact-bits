@@ -301,18 +301,11 @@ const GooeyNav: React.FC<GooeyNavProps> = ({
           }
         `}
       </style>
-      <div className="relative" ref={containerRef}>
-        <nav
-          className="flex relative"
-          style={{ transform: "translate3d(0,0,0.01px)" }}
-        >
+      <div className="gooey-nav-container">
+        <nav className="flex relative">
           <ul
             ref={navRef}
-            className="flex gap-8 list-none p-0 px-4 m-0 relative z-[3]"
-            style={{
-              color: "white",
-              textShadow: "0 1px 1px hsl(205deg 30% 10% / 0.2)",
-            }}
+            className="flex gap-8 list-none p-0 px-4 m-0 relative z-[3] gooey-nav-list"
           >
             {items.map((item, index) => (
               <li
