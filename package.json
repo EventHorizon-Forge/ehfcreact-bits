@@ -1,8 +1,13 @@
 {
-	"name": "react-bits",
-	"private": true,
-	"version": "0.0.0",
+	"name": "@eventhorizon-forge/ehfcreact-bits",
+	"version": "1.0.0",
 	"type": "module",
+	"main": "src/index.js",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/EventHorizon-Forge/ehfcreact-bits.git"
+	},
 	"scripts": {
 		"dev": "vite",
 		"build": "npm run build:registry && vite build",
