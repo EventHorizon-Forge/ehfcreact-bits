@@ -1,126 +1,80 @@
-import { MotionValue, motion, useSpring, useTransform } from "framer-motion";
-import { useEffect } from "react";
-
-interface NumberProps {
-  mv: MotionValue<number>;
-  number: number;
-  height: number;
-}
-
-function Number({ mv, number, height }: NumberProps) {
-  let y = useTransform(mv, (latest) => {
-    let placeValue = latest % 10;
-    let offset = (10 + number - placeValue) % 10;
-    let memo = offset * height;
-    if (offset > 5) {
-      memo -= 10 * height;
-    }
-    return memo;
-  });
-
-  const style: React.CSSProperties = {
-    position: "absolute",
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  };
-
-  return <motion.span style={{ ...style, y }}>{number}</motion.span>;
-}
-
-interface DigitProps {
-  place: number;
-  value: number;
-  height: number;
-  digitStyle?: React.CSSProperties;
-}
-
-function Digit({ place, value, height, digitStyle }: DigitProps) {
-  let valueRoundedToPlace = Math.floor(value / place);
-  let animatedValue = useSpring(valueRoundedToPlace);
-
-  useEffect(() => {
-    animatedValue.set(valueRoundedToPlace);
-  }, [animatedValue, valueRoundedToPlace]);
-
-  const defaultStyle: React.CSSProperties = {
-    height,
-    position: "relative",
-    width: "1ch",
-    fontVariantNumeric: "tabular-nums",
-  };
-
-  return (
-    <div className="digit" style={{ ...defaultStyle, ...digitStyle }}>
-      {Array.from({ length: 10 }, (_, i) => (
-        <Number key={i} mv={animatedValue} number={i} height={height} />
-      ))}
-    </div>
-  );
-}
+import React, { useState, useEffect } from "react";
+import "./counter.css";
 
 interface CounterProps {
-  value: number;
-  fontSize?: number;
-  padding?: number;
-  places?: number[];
-  gap?: number;
-  borderRadius?: number;
-  horizontalPadding?: number;
-  textColor?: string;
-  fontWeight?: React.CSSProperties["fontWeight"];
-  containerStyle?: React.CSSProperties;
-  counterStyle?: React.CSSProperties;
-  digitStyle?: React.CSSProperties;
-  gradientHeight?: number;
-  gradientFrom?: string;
-  gradientTo?: string;
-  topGradientStyle?: React.CSSProperties;
-  bottomGradientStyle?: React.CSSProperties;
+  start?: number;
+  end: number;
+  duration?: number;
+  separator?: string;
+  decimals?: number;
+  prefix?: string;
+  suffix?: string;
+  className?: string;
+  onComplete?: () => void;
 }
 
-export default function Counter({
-  value,
-  fontSize = 100,
-  padding = 0,
-  places = [100, 10, 1],
-  gap = 8,
-  borderRadius = 4,
-  horizontalPadding = 8,
-  textColor = "white",
-  fontWeight = "bold",
-  containerStyle,
-  counterStyle,
-  digitStyle,
-  gradientHeight = 16,
-  gradientFrom = "black",
-  gradientTo = "transparent",
-  topGradientStyle,
-  bottomGradientStyle,
-}: CounterProps) {
-  const height = fontSize + padding;
+export const Counter: React.FC<CounterProps> = ({
+  start = 0,
+  end,
+  duration = 2000,
+  separator = ",",
+  decimals = 0,
+  prefix = "",
+  suffix = "",
+  className = "",
+  onComplete,
+}) => {
+  const [count, setCount] = useState(start);
+  const [animationComplete, setAnimationComplete] = useState(false);
+
+  useEffect(() => {
+    let startTime: number;
+    let animationFrame: number;
+
+    const countUp = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+
+      const progress = Math.min((timestamp - startTime) / duration, 1);
+      const currentCount = progress * (end - start) + start;
+
+      setCount(currentCount);
+
+      if (progress < 1) {
+        animationFrame = requestAnimationFrame(countUp);
+      } else {
+        setCount(end);
+        setAnimationComplete(true);
+        if (onComplete) onComplete();
+      }
+    };
+
+    animationFrame = requestAnimationFrame(countUp);
+
+    return () => {
+      cancelAnimationFrame(animationFrame);
+    };
+  }, [start, end, duration, onComplete]);
+
+  const formatNumber = (num: number) => {
+    const numFixed = num.toFixed(decimals);
+
+    if (separator) {
+      const parts = numFixed.split(".");
+      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, separator);
+      return `${prefix}${parts.join(".")}${suffix}`;
+    }
+
+    return `${prefix}${numFixed}${suffix}`;
+  };
 
   return (
-    <div className="counter-container">
-      <div className="counter-counter">
-        {places.map((place) => (
-          <Digit
-            key={place}
-            place={place}
-            value={value}
-            height={height}
-            digitStyle={digitStyle}
-          />
-        ))}
-      </div>
-      <div className="gradient-container">
-        <div className="top-gradient" />
-        <div className="bottom-gradient" />
-      </div>
+    <div className={className}>
+      <span className="font-bold">{formatNumber(count)}</span>
+      {animationComplete ? (
+        <span className="counter-transition counter-rotate-down ml-2">▲</span>
+      ) : (
+        <span className="counter-transition counter-rotate-up ml-2">▲</span>
+      )}
     </div>
   );
-}
+};

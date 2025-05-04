@@ -1,0 +1,71 @@
+.counter-container {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  border-radius: var(--border-radius, 4px);
+  padding: 0 var(--horizontal-padding, 8px);
+  color: var(--text-color, white);
+  font-weight: var(--font-weight, bold);
+}
+
+.counter-counter {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  gap: var(--gap, 8px);
+  z-index: 1;
+}
+
+.gradient-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+.top-gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--gradient-height, 16px);
+  background: linear-gradient(
+    to bottom,
+    var(--gradient-from, black),
+    var(--gradient-to, transparent)
+  );
+}
+
+.bottom-gradient {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--gradient-height, 16px);
+  background: linear-gradient(
+    to top,
+    var(--gradient-from, black),
+    var(--gradient-to, transparent)
+  );
+}
+
+.digit {
+  height: var(--height);
+  position: relative;
+  width: 1ch;
+  font-variant-numeric: tabular-nums;
+}
+
+.number-span {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

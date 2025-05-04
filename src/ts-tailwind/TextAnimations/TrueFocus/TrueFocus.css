@@ -1,0 +1,72 @@
+.true-focus-container {
+  position: relative;
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  --blur-amount: 5px;
+  --border-color: green;
+  --glow-color: rgba(0, 255, 0, 0.6);
+  --animation-duration: 0.5s;
+}
+
+.true-focus-word {
+  position: relative;
+  font-size: 3rem;
+  font-weight: 900;
+  cursor: pointer;
+  filter: blur(var(--blur-amount));
+  transition: filter var(--animation-duration) ease;
+}
+
+.true-focus-word.active {
+  filter: blur(0px);
+}
+
+.true-focus-outline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  box-sizing: border-box;
+  border: 0;
+}
+
+.true-focus-corner {
+  position: absolute;
+  width: 1rem;
+  height: 1rem;
+  border-width: 3px;
+  border-radius: 3px;
+  border-color: var(--border-color);
+  filter: drop-shadow(0 0 4px var(--glow-color));
+}
+
+.true-focus-corner-top-left {
+  top: -10px;
+  left: -10px;
+  border-right: 0;
+  border-bottom: 0;
+}
+
+.true-focus-corner-top-right {
+  top: -10px;
+  right: -10px;
+  border-left: 0;
+  border-bottom: 0;
+}
+
+.true-focus-corner-bottom-left {
+  bottom: -10px;
+  left: -10px;
+  border-right: 0;
+  border-top: 0;
+}
+
+.true-focus-corner-bottom-right {
+  bottom: -10px;
+  right: -10px;
+  border-left: 0;
+  border-top: 0;
+}
